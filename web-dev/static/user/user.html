@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            /* 与前面一致的背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .user-avatar {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: #74b8d5;
+            /* 蓝色背景 */
+            border-radius: 50%;
+            margin-right: 15px;
+            transition: background-color 0.75s ease;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .user-avatar:hover {
+            background-color: #51afe1;
+            /* hover时改变颜色 */
+            transform: scale(1.05);
+        }
+
+        .user-name {
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333333;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="user-container" id="user-container"> -->
+    <!-- 左侧：用户名首字母 -->
+    <div class="user-avatar" id="user-avatar">
+        <!-- 动态生成 -->
+    </div>
+
+    <!-- 右侧：完整用户名 -->
+    <div class="user-name" id="user-name">
+        <!-- 动态生成 -->
+    </div>
+    <!-- </div> -->
+
+    <script>
+        // 模拟用户数据
+        const loginPageUrl = "user_details.html"; // 用户详情界面
+        let username = ""
+        let cachename = localStorage.getItem("username");
+        if (cachename == null) {
+            username = "登录"
+        } else {
+            username = cachename
+        }
+        // 显示用户名首字符
+        document.getElementById("user-avatar").textContent = username.charAt(0);
+
+        // 显示完整用户名
+        document.getElementById("user-name").textContent = username;
+
+        // 添加点击事件，跳转到登录页面
+        document.getElementById("user-avatar").addEventListener("click", function () {
+            window.open(loginPageUrl);
+        });
+        document.getElementById("user-name").addEventListener("click", function () {
+            window.open(loginPageUrl);
+        });
+    </script>
+</body>
+
+</html>

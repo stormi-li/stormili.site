@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            padding-top: 15vh;
+        }
+
+        /* 动态背景装饰 */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1) {
+            width: 160px;
+            height: 160px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 55%;
+            left: 30%;
+        }
+
+        .circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 35%;
+            right: 20%;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* 卡片样式 */
+        .profile-card {
+            width: 340px;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #ffffff;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .top-section {
+            background-color: #74b8d5;
+            padding: 25px;
+            position: relative;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .edit-icon:hover {
+            opacity: 1;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            margin: 10px auto;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #74b8d5;
+            border: 3px solid #ffffff;
+        }
+
+        .bottom-section {
+            padding: 20px;
+        }
+
+        .username,
+        .email {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #263238;
+        }
+
+        .email {
+            font-size: 14px;
+            color: #607d8b;
+        }
+
+        .input-field {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #74b8d5;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .action-button {
+            display: block;
+            width: 80%;
+            margin: 20px auto;
+            padding: 12px 0;
+            background-color: #74b8d5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #569bb4;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 动态背景 -->
+    <div class="background">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <!-- 用户卡片 -->
+    <div class="profile-card">
+        <div class="top-section">
+            <span class="edit-icon" onclick="editProfile()">&#9998;</span>
+            <div class="avatar" id="avatar">G</div>
+        </div>
+        <div class="bottom-section">
+            <div class="username" id="username">Guest</div>
+            <div class="email" id="email">No email available</div>
+            <button class="action-button" onclick="redirectToLogin()" id="button_value">登录</button>
+        </div>
+    </div>
+
+    <script>
+        let isEditing = false;
+
+        // 从本地存储中加载用户信息
+        function loadUserProfile() {
+            const username = localStorage.getItem("username") || "Guest";
+            const email = localStorage.getItem("email") || "No email available";
+
+            document.getElementById("avatar").textContent = username.charAt(0).toUpperCase();
+            document.getElementById("username").textContent = username;
+            document.getElementById("email").textContent = email;
+
+            const button = document.getElementById("button_value");
+            if (email === "No email available") {
+                button.innerText = "登录";
+            } else {
+                button.innerText = "登出";
+            }
+        }
+
+        // 编辑功能
+        function editProfile() {
+            isEditing = !isEditing;
+            const usernameField = document.getElementById("username");
+            const emailField = document.getElementById("email");
+            const button = document.getElementById("button_value");
+
+            if (isEditing) {
+                // 将显示内容变为输入框
+                usernameField.innerHTML = `<input type="text" id="editUsername" class="input-field" value="${localStorage.getItem('username') || 'Username'}">`;
+                emailField.innerHTML = `<input type="email" id="editEmail" class="input-field" value="${localStorage.getItem('email') || 'Email'}">`;
+                button.innerText = "提交";
+                button.onclick = submitProfile;
+            } else {
+                // 恢复显示为文本
+                loadUserProfile();
+            }
+        }
+
+        // 提交修改后的个人资料
+        async function submitProfile() {
+            const newUsername = document.getElementById("editUsername").value;
+            const newEmail = document.getElementById("editEmail").value;
+
+            // 验证输入
+            if (!newUsername || !newEmail) {
+                alert("Username and email cannot be empty.");
+                return;
+            }
+
+            try {
+                // 获取用户 token，用于身份验证
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    alert("You are not logged in. Please log in first.");
+                    return;
+                }
+
+                // 向后端发送请求
+                const response = await fetch("/auth_service/user/update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}` // 使用 Bearer 令牌验证用户身份
+                    },
+                    body: JSON.stringify({
+                        username: newUsername,
+                        email: newEmail
+                    })
+                });
+
+                // 解析响应
+                if (!response.ok) {
+                    const { error } = await response.json();
+                    throw new Error(error || "Failed to update profile.");
+                }
+
+                const result = await response.json();
+                alert("Profile updated successfully!");
+
+                // 保存新的用户信息到 localStorage
+                localStorage.setItem("username", result.username || newUsername);
+                localStorage.setItem("email", result.email || newEmail);
+
+                // 刷新用户信息显示
+                loadUserProfile();
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                alert(`Error updating profile: ${error.message}`);
+            } finally {
+                isEditing = false; // 退出编辑模式
+            }
+        }
+
+        // 登录/登出跳转
+        function redirectToLogin() {
+            localStorage.removeItem("username");
+            localStorage.removeItem("email");
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        }
+
+        // 初始化页面
+        loadUserProfile();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            width: 36px;
+            height: 36px;
+            background-color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+            fill: #5a5a5a;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            min-width: 900px;
+            height: 90vh;
+            min-height: 600px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .html-box {
+            flex: 0 0 60%;
+            height: 100%;
+            background-color: #f9f9f9;
+            border-right: 2px solid #ddd;
+        }
+
+        .comments-section {
+            flex: 0 0 40%;
+            height: 100%;
+            background-color: #f3f4f6;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .comments-section iframe {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 动画效果 */
+        .container {
+            animation: fadeIn 0.75s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 按钮显现动画 */
+        @keyframes buttonFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 应用动画到按钮 */
+        .back-button {
+            animation: buttonFadeIn 0.75s ease-in-out;
+            background-color:#51afe1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 返回按钮 -->
+    <button class="back-button" onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32">
+            <path fill="white" d="M30.82 33.18L20.66 24l10.16-9.18L28 12l-12 12 12 12z" />
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- 左侧嵌入 HTML 内容 -->
+        <div class="html-box">
+            <iframe id="htmlContent" title="Embedded HTML"></iframe>
+        </div>
+
+        <!-- 右侧评论区域 -->
+        <div class="comments-section">
+            <iframe id="commentsContent" title="Comments Section"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // 获取 URL 参数的函数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // 根据 type 参数设置 iframe 的内容
+        function loadContentBasedOnType() {
+            const type = getQueryParam('type');
+            const htmlIframe = document.getElementById('htmlContent');
+            const commentsIframe = document.getElementById('commentsContent');
+
+            // 设置默认页面或根据 type 加载不同页面
+            htmlIframe.src = `../markdowns/${type}.html`;
+            commentsIframe.src = `../comment/comment.html?type=${type}`;
+        }
+
+        // 调用加载函数
+        loadContentBasedOnType();
+    </script>
+</body>
+
+</html>

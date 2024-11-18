@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评论页面</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+            /* 确保设置了高度 */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 评论筛选部分 */
+        .filter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .filter button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-size: 14px;
+            color: #007bff;
+            margin-left: 10px;
+        }
+
+        .filter button.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* 评论显示部分 */
+        .comments {
+            margin-top: 50px;
+            padding-bottom: 60px;
+            /* 留出底部空间 */
+            max-height: calc(100vh - 150px);
+            /* Adjust based on the input field's height */
+            overflow-y: auto;
+            padding-right: 10px;
+            /* 保证滚动条不遮挡内容 */
+        }
+
+        .comment {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+        /* 头像部分样式 */
+        .user-avatar {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #74b8d5;
+            border-radius: 50%;
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+
+        .comment-body {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .comment-header .username {
+            font-weight: bold;
+        }
+
+        .comment-content {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* 评论发布部分 */
+        .comment-input {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            background-color: #fff;
+            padding: 10px 15px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid #ddd;
+            z-index: 1000;
+        }
+
+        .comment-input textarea {
+            flex: 1;
+            height: 50px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .comment-input button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .comment-input button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .filter button.active {
+            font-weight: bold;
+            text-decoration: underline;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 评论筛选部分 -->
+        <div class="filter">
+            <button class="active" onclick="sortComments('time')">按时间排序</button>
+            <button onclick="refreshComments()">刷新</button>
+        </div>
+
+        <!-- 评论显示部分 -->
+        <div id="comments" class="comments"></div>
+    </div>
+
+    <!-- 评论发布部分 -->
+    <div class="comment-input">
+        <textarea id="commentInput" placeholder="留下你的评论吧..."></textarea>
+        <button id="submitComment" onclick="addComment()" disabled>评论</button>
+    </div>
+
+    <script>
+        const comments = []; // 确保 comments 被正确初始化
+        const commentInput = document.getElementById("commentInput");
+        const submitButton = document.getElementById("submitComment");
+        const commentsContainer = document.getElementById("comments");
+
+        // 获取 URL 参数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // 获取用户信息
+        const username = localStorage.getItem("username");
+        const type = getQueryParam("type");
+
+        // 禁用评论发布功能（未登录时）
+        if (!username) {
+            commentInput.disabled = true;
+            submitButton.disabled = true;
+            commentInput.placeholder = "请先登录后再发表评论。";
+        }
+
+        // 初始化页面
+        async function initializeComments() {
+            console.log("Initializing comments...");
+            await refreshComments();
+            sortComments("time"); // 默认按时间排序
+        }
+
+        // 检查输入框内容，动态启用按钮
+        commentInput.addEventListener("input", () => {
+            submitButton.disabled = commentInput.value.trim() === "";
+        });
+
+        // 从服务器获取评论数据
+        async function fetchCommentsFromServer() {
+            try {
+                const response = await fetch(
+                    `../comment_service/comments?category=${type || ""}`,
+                    {
+                        method: "GET",
+                    }
+                );
+                if (!response.ok) {
+                    throw new Error("获取评论失败");
+                }
+                const data = await response.json();
+                console.log("Fetched comments:", data); // 调试输出
+                return data;
+            } catch (error) {
+                console.error("获取评论失败:", error);
+                alert("获取评论失败，请稍后再试！");
+                return [];
+            }
+        }
+
+        // 刷新评论
+        async function refreshComments() {
+            try {
+                const serverComments = await fetchCommentsFromServer();
+                comments.splice(0, comments.length, ...serverComments.map(formatComment));
+                console.log("Updated comments array:", comments); // 调试输出
+                renderComments();
+                commentsContainer.scrollTop = 0;
+            } catch (error) {
+                console.error("刷新评论失败:", error);
+                alert("刷新失败，请稍后再试！");
+            }
+        }
+
+        // 添加评论
+        async function addComment() {
+            const text = commentInput.value.trim();
+            if (!text) return;
+
+            try {
+                const response = await fetch(`../comment_service/comments`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username,
+                        content: text,
+                        category: type || "general",
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("发表评论失败");
+                }
+
+                const newComment = await response.json();
+                console.log("New comment added:", newComment); // 调试输出
+                comments.unshift(formatComment(newComment));
+
+                commentInput.value = "";
+                submitButton.disabled = true;
+                renderComments();
+                commentsContainer.scrollTop = 0;
+            } catch (error) {
+                console.error("发表评论失败:", error);
+                alert("发表评论失败，请稍后再试！");
+            }
+        }
+
+        // 格式化评论数据
+        function formatComment(comment) {
+            return {
+                ...comment,
+                timestamp: new Date(comment.created_at || comment.timestamp),
+            };
+        }
+
+        // 渲染评论
+        function renderComments() {
+            commentsContainer.innerHTML = comments
+                .map((comment) => {
+                    const formattedContent = comment.content.replace(/\n/g, "<br>");
+                    const avatarLetter = comment.username.charAt(0).toUpperCase();
+                    return `
+                <div class="comment">
+                    <div class="user-avatar">${avatarLetter}</div>
+                    <div class="comment-body">
+                        <div class="comment-header">
+                            <span class="username">${comment.username}</span>
+                        </div>
+                        <div class="comment-content">${formattedContent}</div>
+                        <div class="comment-time">${formatTime(comment.timestamp)}</div>
+                    </div>
+                </div>
+            `;
+                })
+                .join("");
+            console.log("Rendered comments:", commentsContainer.innerHTML); // 调试输出
+        }
+
+        // 格式化时间
+        function formatTime(timestamp) {
+            const diff = new Date() - new Date(timestamp);
+            const minutes = Math.floor(diff / 60000);
+            if (minutes < 1) return "刚刚";
+            if (minutes < 60) return `${minutes} 分钟前`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} 小时前`;
+            const days = Math.floor(hours / 24);
+            return `${days} 天前`;
+        }
+
+        let sortOrder = "desc"; // 默认倒序，显示最新时间
+
+        // 排序评论
+        function sortComments() {
+            if (sortOrder === "desc") {
+                comments.sort((a, b) => b.timestamp - a.timestamp); // 按时间倒序
+                sortOrder = "asc"; // 切换到正序
+            } else {
+                comments.sort((a, b) => a.timestamp - b.timestamp); // 按时间正序
+                sortOrder = "desc"; // 切换到倒序
+            }
+            renderComments();
+        }
+
+        // 初始化页面
+        initializeComments();
+    </script>
+</body>
+
+</html>

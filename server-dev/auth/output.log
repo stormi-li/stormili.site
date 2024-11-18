@@ -1,0 +1,91 @@
+nohup: ignoring input
+2024/11/17 14:09:52 Database connected and migrated successfully.
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /register                 --> auth/controllers.Register (3 handlers)
+[GIN-debug] POST   /login                    --> auth/controllers.Login (3 handlers)
+[GIN-debug] POST   /user/update              --> auth/controllers.UpdateUser (4 handlers)
+2024/11/17 14:09:52 register server for auth_service[118.25.196.166:9090] is starting
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :9090
+[GIN] 2024/11/17 - 15:27:11 | 200 |  319.158103ms | 117.152.201.214 | POST     "/user/update"
+[GIN] 2024/11/17 - 15:27:21 | 200 |   37.994844ms | 117.152.201.214 | POST     "/user/update"
+[GIN] 2024/11/17 - 15:57:17 | 404 |         671ns |  199.45.154.149 | GET      "/api/v1/targets"
+[GIN] 2024/11/17 - 15:57:18 | 404 |         702ns |  199.45.154.149 | GET      "/api/v1/targets"
+[GIN] 2024/11/17 - 15:57:18 | 404 |         601ns |  199.45.154.149 | GET      "/api/v1/label/version/values"
+[GIN] 2024/11/17 - 15:57:19 | 404 |         591ns |  199.45.154.149 | GET      "/api/v1/label/version/values"
+[GIN] 2024/11/17 - 15:57:19 | 404 |         682ns |  199.45.154.149 | GET      "/api/v1/label/goversion/values"
+[GIN] 2024/11/17 - 15:57:20 | 404 |         571ns |  199.45.154.149 | GET      "/api/v1/label/goversion/values"
+[GIN] 2024/11/17 - 15:57:20 | 404 |         661ns |  199.45.154.149 | GET      "/api/v1/query?query=prometheus_build_info"
+[GIN] 2024/11/17 - 15:57:20 | 404 |         982ns |  199.45.154.149 | GET      "/api/v1/query?query=prometheus_build_info"
+[GIN] 2024/11/17 - 15:57:21 | 404 |         601ns |  199.45.154.149 | GET      "/api/v1/labels"
+[GIN] 2024/11/17 - 15:57:22 | 404 |         591ns |  199.45.154.149 | GET      "/api/v1/labels"
+[GIN] 2024/11/17 - 15:57:23 | 404 |      11.071µs |  199.45.154.149 | GET      "/api/v1/label/__name__/values"
+[GIN] 2024/11/17 - 15:57:24 | 404 |         581ns |  199.45.154.149 | GET      "/api/v1/label/__name__/values"
+[GIN] 2024/11/17 - 15:57:24 | 404 |         612ns |  199.45.154.149 | GET      "/api/v1/status/config"
+[GIN] 2024/11/17 - 15:57:24 | 404 |         581ns |  199.45.154.149 | GET      "/"
+[GIN] 2024/11/17 - 15:57:36 | 404 |         581ns |  199.45.154.149 | GET      "/"
+[GIN] 2024/11/17 - 15:57:46 | 404 |         641ns |  199.45.154.149 | GET      "/"
+[GIN] 2024/11/17 - 15:57:48 | 404 |         671ns |  199.45.154.149 | PRI      "*"
+[GIN] 2024/11/17 - 19:52:54 | 404 |       1.152µs |   116.62.143.63 | GET      "/"
+[GIN] 2024/11/17 - 19:53:14 | 404 |         891ns |   116.62.143.63 | GET      "/favicon.ico"
+[GIN] 2024/11/17 - 21:46:50 | 200 |  152.562758ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/17 - 22:09:39 | 200 |  168.805824ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 01:39:34 | 404 |         371ns |  139.224.190.87 | HEAD     "/start/index.html"
+[GIN] 2024/11/18 - 01:39:34 | 404 |       1.172µs |  139.224.190.87 | HEAD     "/pscc/"
+[GIN] 2024/11/18 - 03:33:59 | 404 |         711ns | 154.212.141.173 | GET      "/"
+[GIN] 2024/11/18 - 03:44:47 | 404 |         701ns |  180.101.244.12 | GET      "/"
+[GIN] 2024/11/18 - 03:44:50 | 404 |         581ns |  220.196.160.53 | GET      "/"
+[GIN] 2024/11/18 - 03:44:58 | 404 |         602ns |  220.196.160.76 | GET      "/"
+[GIN] 2024/11/18 - 04:49:02 | 200 |   211.34232ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 07:00:52 | 404 |         621ns |  180.163.28.143 | GET      "/"
+[GIN] 2024/11/18 - 09:52:27 | 404 |         862ns | 185.180.140.105 | GET      "/"
+[GIN] 2024/11/18 - 12:05:12 | 404 |       1.012µs | 154.212.141.233 | GET      "/"
+[GIN] 2024/11/18 - 12:05:14 | 404 |         621ns | 154.212.141.233 | GET      "/favicon.ico"
+[mysql] 2024/11/18 13:15:49 packets.go:122: closing bad idle connection: unexpected read from socket
+[mysql] 2024/11/18 13:15:49 connection.go:173: driver: bad connection
+
+2024/11/18 13:15:49 [32m/home/ubuntu/lili/server-dev/auth/controllers/auth.go:51 [33mSLOW SQL >= 200ms
+[0m[31;1m[308.898ms] [33m[rows:1][35m SELECT * FROM `users` WHERE (username = 'stormi-li' OR email = 'stormi-li') AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1[0m
+[GIN] 2024/11/18 - 13:15:49 | 200 |  406.855038ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 15:21:26 | 404 |       1.012µs | 184.105.247.195 | GET      "/"
+[GIN] 2024/11/18 - 15:21:40 | 404 |         721ns | 184.105.247.195 | GET      "/favicon.ico"
+[GIN] 2024/11/18 - 15:24:27 | 404 |         591ns | 180.101.245.248 | GET      "/"
+[GIN] 2024/11/18 - 16:37:16 | 404 |         932ns |   206.189.202.0 | GET      "/"
+{{0 0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC {0001-01-01 00:00:00 +0000 UTC false}} silence 1225949963@qq.com 1225949963}
+[GIN] 2024/11/18 - 17:55:19 | 201 |  212.219353ms |  117.152.203.36 | POST     "/register"
+[GIN] 2024/11/18 - 17:55:37 | 200 |   89.032841ms |  117.152.203.36 | POST     "/login"
+[GIN] 2024/11/18 - 17:57:01 | 200 |   78.021669ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 18:00:55 | 404 |         691ns |  180.101.244.15 | GET      "/register"
+[GIN] 2024/11/18 - 18:26:23 | 200 |   76.682901ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 19:42:00 | 404 |         762ns |  167.94.138.167 | GET      "/api/v1/targets"
+[GIN] 2024/11/18 - 19:42:00 | 404 |         671ns |  167.94.138.167 | GET      "/api/v1/targets"
+[GIN] 2024/11/18 - 19:42:01 | 404 |         671ns |  167.94.138.167 | GET      "/api/v1/label/version/values"
+[GIN] 2024/11/18 - 19:42:01 | 404 |         571ns |  167.94.138.167 | GET      "/api/v1/label/version/values"
+[GIN] 2024/11/18 - 19:42:02 | 404 |         581ns |  167.94.138.167 | GET      "/api/v1/label/goversion/values"
+[GIN] 2024/11/18 - 19:42:02 | 404 |         561ns |  167.94.138.167 | GET      "/api/v1/label/goversion/values"
+[GIN] 2024/11/18 - 19:42:02 | 404 |         972ns |  167.94.138.167 | GET      "/api/v1/query?query=prometheus_build_info"
+[GIN] 2024/11/18 - 19:42:03 | 404 |         791ns |  167.94.138.167 | GET      "/api/v1/query?query=prometheus_build_info"
+[GIN] 2024/11/18 - 19:42:03 | 404 |         792ns |  167.94.138.167 | GET      "/api/v1/labels"
+[GIN] 2024/11/18 - 19:42:04 | 404 |         762ns |  167.94.138.167 | GET      "/api/v1/labels"
+[GIN] 2024/11/18 - 19:42:05 | 404 |         581ns |  167.94.138.167 | GET      "/api/v1/label/__name__/values"
+[GIN] 2024/11/18 - 19:42:07 | 404 |         751ns |  167.94.138.167 | GET      "/api/v1/label/__name__/values"
+[GIN] 2024/11/18 - 19:42:09 | 404 |         802ns |  167.94.138.167 | GET      "/api/v1/status/config"
+[GIN] 2024/11/18 - 19:42:09 | 404 |         581ns |  167.94.138.167 | GET      "/"
+[GIN] 2024/11/18 - 19:42:22 | 404 |         601ns |  167.94.138.167 | GET      "/"
+[GIN] 2024/11/18 - 19:42:35 | 404 |         582ns |  167.94.138.167 | GET      "/"
+[GIN] 2024/11/18 - 19:42:37 | 404 |         711ns |  167.94.138.167 | PRI      "*"
+[GIN] 2024/11/18 - 19:44:51 | 404 |         842ns |  180.101.244.16 | GET      "/api/v1/label/version/values"
+[GIN] 2024/11/18 - 19:47:56 | 404 |         621ns | 220.196.160.117 | GET      "/api/v1/labels"
+[GIN] 2024/11/18 - 19:49:44 | 404 |         581ns |  172.168.40.180 | GET      "/"
+[GIN] 2024/11/18 - 19:50:45 | 404 |         801ns |   59.83.208.106 | GET      "/api/v1/label/goversion/values"
+[GIN] 2024/11/18 - 19:52:33 | 404 |         912ns | 220.196.160.124 | GET      "/api/v1/query?query=prometheus_build_info"
+[GIN] 2024/11/18 - 19:52:53 | 404 |         571ns |  180.101.244.12 | GET      "/api/v1/targets"
+[GIN] 2024/11/18 - 19:53:35 | 404 |         611ns | 220.196.160.124 | GET      "/api/v1/label/__name__/values"
+[GIN] 2024/11/18 - 20:29:38 | 200 |   77.054349ms | 117.152.201.214 | POST     "/login"
+[GIN] 2024/11/18 - 20:56:29 | 200 |   78.162161ms | 117.152.201.214 | POST     "/login"
