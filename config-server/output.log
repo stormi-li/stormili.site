@@ -1,0 +1,4 @@
+2024/11/19 23:53:04 register server for mysql[118.25.196.166:3933] is starting
+redis: 2024/11/29 00:59:06 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:50070->118.25.196.166:3934: i/o timeout
+redis: 2024/11/29 00:59:13 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:50070->118.25.196.166:3934: i/o timeout
+redis: 2024/11/29 01:01:03 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:45686->118.25.196.166:3934: i/o timeout

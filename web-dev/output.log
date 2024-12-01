@@ -1,3 +1,6 @@
 nohup: ignoring input
 2024/11/18 18:17:30 register server for stormili.site[118.25.196.166:7070] is starting
 2024/11/18 18:17:30 omi web server: stormili.site is running on http://118.25.196.166:7070
+redis: 2024/11/29 00:59:10 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:41854->118.25.196.166:3934: i/o timeout
+redis: 2024/11/29 00:59:13 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:41854->118.25.196.166:3934: i/o timeout
+redis: 2024/11/29 01:00:58 pubsub.go:159: redis: discarding bad PubSub connection: write tcp 10.0.16.15:45710->118.25.196.166:3934: i/o timeout
